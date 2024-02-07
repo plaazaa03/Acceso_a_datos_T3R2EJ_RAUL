@@ -92,6 +92,8 @@ public class App
         System.out.println("Introduzca el codigo del empleado que desea buscar: ");
         int codEmpleado = scanner.nextInt();
 
+
+
         EmpleadoClass EmpleadoClass = session.get(EmpleadoClass.class, codEmpleado);
 
         if (EmpleadoClass != null){
@@ -113,15 +115,19 @@ public class App
         System.out.println("Introduzca el departamento del cliente: ");
         int codDepartamento = scanner.nextInt();
 
+        Query query = session.createQuery("from EmpleadoClass where dpto =:codigo");
+        query.setParameter("codigo", codDepartamento);
+
+
         DepartamentoClass departamentoClass = session.get(DepartamentoClass.class, codDepartamento);
 
         if (departamentoClass != null){
             System.out.println("Departamento: " + departamentoClass.getCodept() + "- " + departamentoClass.getNombre());
             System.out.println("==========================");
 
-            List<EmpleadoClass> empleados = (List<EmpleadoClass>) departamentoClass.getEmpleadosByCodept();
+            List<EmpleadoClass> empleadoClasses = query.getResultList();
 
-            for (EmpleadoClass EmpleadoClass : empleados){
+            for (EmpleadoClass EmpleadoClass : empleadoClasses){
                 System.out.println("==========================");
                 System.out.println("Codigo: " + EmpleadoClass.getCodemple());
                 System.out.println("Nombre: " + EmpleadoClass.getNombre());
